@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 110
+exclude = */migrations,env*,tests,vendor,code_checks,config,deploy,flower,public,scripts,static,templates,collected_static,
+max-complexity = 20
+ignore = W503,E231

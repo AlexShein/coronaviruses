@@ -47,8 +47,8 @@ def computeCountAndLists(s):
         nuclTotal += 1
         dinuclCnt[x][y] += 1
         dinuclTotal += 1
-    assert (nuclTotal == len(s))
-    assert (dinuclTotal == len(s) - 1)
+    assert nuclTotal == len(s)
+    assert dinuclTotal == len(s) - 1
     return nuclCnt, dinuclCnt, List
 
 

@@ -8,9 +8,8 @@ import pandas as pd
 import pyranges
 
 BIN_SIZE = 100
-OUTPUT_FILE = f'scores_by_virus_anova_pvals_{BIN_SIZE}.csv'
+OUTPUT_FILE = f'scores_by_virus_{BIN_SIZE}.csv'
 MAX_LENGTH = 31686
-PALS_DIR = './pal'
 COLUMNS = [
     'Start',
     'End',
@@ -23,7 +22,7 @@ COLUMNS = [
     'Full_sequence',
 ]
 
-logger = logging.getLogger('overlaps_by_virus_anova')
+logger = logging.getLogger('overlaps_by_virus')
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
@@ -59,15 +58,15 @@ def get_ranges_scores_by_virus(inputs):
     return result_df
 
 
-def main(processes):
+def main(processes, pals_dir):
     '''
     '''
     logger.info(f'Running script with up to {processes} processes.')
     logger.info('Reading input data.')
 
-    filenames = os.listdir(PALS_DIR)
+    filenames = os.listdir(pals_dir)
     input_data = {
-        filename: pd.read_csv(os.path.join(PALS_DIR, filename), sep='\t', header=None).rename(
+        filename: pd.read_csv(os.path.join(pals_dir, filename), sep='\t', header=None).rename(
             columns=dict(enumerate(COLUMNS))
         )
         for filename in filenames
@@ -84,15 +83,19 @@ def main(processes):
     result_df = pd.concat(results, axis=0)
 
     logger.info('Writing result to file.')
-    result_df.to_csv(OUTPUT_FILE)
+    output_file = f'{pals_dir.replace("/", "")}_{OUTPUT_FILE}'
+    result_df.to_csv(output_file)
 
-    logger.info(f'Finished computing. Outputfile is {OUTPUT_FILE}')
+    logger.info(f'Finished computing. Outputfile is {output_file}')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("path", metavar='N', type=str, help="Path to a folder with .pal files.")
     parser.add_argument(
         "--processes", type=int, help="Count of processes to run in parallel.", default=os.cpu_count()
     )
     args = parser.parse_args()
-    main(args.processes)
+    main(
+        args.processes, args.path,
+    )

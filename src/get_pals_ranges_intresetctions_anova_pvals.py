@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 import pyranges
 
-BIN_SIZE = 100
-OUTPUT_FILE = f'scores_by_virus_{BIN_SIZE}.csv'
+BIN_SIZE = 10
+OUTPUT_FILE = f'sars_cov_2_scores_by_virus_{BIN_SIZE}.csv'
 MAX_LENGTH = 31686
 COLUMNS = [
     'Start',

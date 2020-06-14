@@ -8,7 +8,7 @@ import pandas as pd
 import pyranges
 
 BIN_SIZE = 10
-OUTPUT_FILE = f'sars_cov_2_scores_by_virus_{BIN_SIZE}.csv'
+OUTPUT_FILE = f'coronaviruses_scores_by_virus_{BIN_SIZE}_S15-30_L3-10_M3.csv'
 MAX_LENGTH = 31686
 COLUMNS = [
     'Start',
@@ -50,10 +50,26 @@ def get_ranges_scores_by_virus(inputs):
             )  # Chromosomes param added as a workaround for non-chromosome data
         ).df
         if intersections_df.empty:
-            bins_stats.append(dict(virus=virus, Start=range_[0], End=range_[1], Score=0,))
+            bins_stats.append(
+                dict(
+                    id=virus.split('|')[0],
+                    virus=virus.split('|')[1],
+                    Start=range_[0],
+                    End=range_[1],
+                    Score=0,
+                )
+            )
             continue
         score = intersections_df.shape[0]
-        bins_stats.append(dict(Start=range_[0], End=range_[1], virus=virus, Score=score,))
+        bins_stats.append(
+            dict(
+                id=virus.split('|')[0],
+                Start=range_[0],
+                End=range_[1],
+                virus=virus.split('|')[1],
+                Score=score,
+            )
+        )
     result_df = pd.DataFrame(bins_stats)
     return result_df
 

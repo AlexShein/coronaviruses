@@ -10,7 +10,7 @@ csplit $1 '/^>.*/' "{$RECORDS_COUNT}"
 
 for filename in $(ls xx*); do
     SEQ_NAME=$(
-        head -n1 $filename | sed -e 's/^.*\.[0-9] \(.*\)$/\1/' -e 's/[ \/]/_/g' -e 's/[,>]//g'
+        head -n1 $filename | sed -e 's/^.*\(NC.*\.[0-9]\) \(.*\)$/\1|\2/' -e 's/[ \/]/_/g' -e 's/[,>]//g'
         )
     echo "Moving $filename to $2/$SEQ_NAME.fasta"
     mv $filename $2/$SEQ_NAME.fasta

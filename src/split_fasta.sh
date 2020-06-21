@@ -6,7 +6,7 @@
 
 RECORDS_COUNT=$(($(cat $1 | grep -c '>')-2))
 
-csplit $1 '/^>.*/' "{$RECORDS_COUNT}"
+csplit -n 3 $1 '/^>.*/' "{$RECORDS_COUNT}"
 
 for filename in $(ls xx*); do
     SEQ_NAME=$(
